@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, Pressable } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Pagamento({ navigation }) {
   const [metodo, setMetodo] = useState('cartao');
@@ -7,6 +8,7 @@ export default function Pagamento({ navigation }) {
   const [nome, setNome] = useState('');
   const [validade, setValidade] = useState('');
   const [cvv, setCvv] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   function pagar() {
     if (metodo === 'cartao') {
@@ -15,7 +17,8 @@ export default function Pagamento({ navigation }) {
         return;
       }
     }
-    Alert.alert('Pagamento realizado com sucesso!');
+    setShowModal(true);
+    setTimeout(() => setShowModal(false), 2000); // Fecha após 2s
     // Aqui você pode navegar ou limpar campos, se desejar
   }
 
@@ -115,6 +118,37 @@ export default function Pagamento({ navigation }) {
           <Text style={styles.payButtonText}>Pagar</Text>
         </TouchableOpacity>
       </View>
+      {/* Modal customizado */}
+      <Modal
+        visible={showModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowModal(false)}
+      >
+        <Pressable style={styles.modalOverlay} onPress={() => setShowModal(false)}>
+          <View style={styles.modalBox}>
+            <View style={styles.checkCircle}>
+              <Text style={styles.checkIcon}>✓</Text>
+            </View>
+            <Text style={styles.modalText}>Pagamento realizado com sucesso.</Text>
+          </View>
+        </Pressable>
+      </Modal>
+      {/* Barra de navegação inferior */}
+      <View style={styles.bottomNav}>
+        <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Inicio')}>
+          <Icon name="home-outline" size={28} color="#B4D464" />
+          <Text style={styles.navText}>Início</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Perfil')}>
+          <Icon name="account-circle-outline" size={28} color="#B4D464" />
+          <Text style={styles.navText}>Perfil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Carrinho')}>
+          <Icon name="cart-outline" size={28} color="#B4D464" />
+          <Text style={styles.navText}>Carrinho</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -207,5 +241,64 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.18)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalBox: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 32,
+    alignItems: 'center',
+    elevation: 6,
+    minWidth: 260,
+  },
+  checkCircle: {
+    backgroundColor: '#B4D464',
+    borderRadius: 50,
+    width: 64,
+    height: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  checkIcon: {
+    color: '#fff',
+    fontSize: 36,
+    fontWeight: 'bold',
+  },
+  modalText: {
+    fontSize: 16,
+    color: '#333',
+    textAlign: 'center',
+    marginTop: 4,
+    fontWeight: '500',
+  },
+  bottomNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderColor: '#eee',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 10,
+  },
+  navButton: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  navText: {
+    fontSize: 12,
+    color: '#B4D464',
+    marginTop: 2,
+    fontWeight: 'bold',
   },
 });
