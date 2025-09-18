@@ -47,6 +47,35 @@ export default function Inicio({ navigation }) {
     },
   ];
 
+  // Categorias com imagens
+  const categorias = [
+    {
+      nome: 'Beleza',
+      imagem: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=80&q=80',
+      tela: 'Beleza',
+    },
+    {
+      nome: 'Fashion',
+      imagem: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=80&q=80',
+      tela: 'Fashion',
+    },
+    {
+      nome: 'Moda',
+      imagem: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=80&q=80',
+      tela: 'Moda',
+    },
+    {
+      nome: 'Mens',
+      imagem: 'https://pbs.twimg.com/media/GzS8Mm9XgAA4bjh?format=png&name=360x360',
+      tela: 'Mens',
+    },
+    {
+      nome: 'Womens',
+      imagem: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=80&q=80',
+      tela: 'Womens',
+    },
+  ];
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 80 }}>
       {/* Topo: Logo + Avatar */}
@@ -75,22 +104,17 @@ export default function Inicio({ navigation }) {
       {/* Categorias */}
       <Text style={styles.categoriasTitle}>Produtos em destaque</Text>
       <View style={styles.categoriasRow}>
-        <TouchableOpacity style={styles.categoriaCircle} onPress={() => navigation.navigate('Beleza')}>
-          {/* Imagem futura */}
-          <Text style={styles.categoriaText}>Beleza</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.categoriaCircle} onPress={() => navigation.navigate('Fashion')}>
-          <Text style={styles.categoriaText}>Fashion</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.categoriaCircle} onPress={() => navigation.navigate('Moda')}>
-          <Text style={styles.categoriaText}>Moda</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.categoriaCircle} onPress={() => navigation.navigate('Mens')}>
-          <Text style={styles.categoriaText}>Mens</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.categoriaCircle} onPress={() => navigation.navigate('Womens')}>
-          <Text style={styles.categoriaText}>Womens</Text>
-        </TouchableOpacity>
+        {categorias.map((cat, idx) => (
+          <View key={cat.nome} style={{ alignItems: 'center', width: 62 }}>
+            <TouchableOpacity
+              style={styles.categoriaCircle}
+              onPress={() => navigation.navigate(cat.tela)}
+            >
+              <Image source={{ uri: cat.imagem }} style={styles.categoriaImg} />
+            </TouchableOpacity>
+            <Text style={styles.categoriaText}>{cat.nome}</Text>
+          </View>
+        ))}
       </View>
       {/* Banner */}
       <View style={styles.bannerBox}>
@@ -211,6 +235,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 2,
     marginHorizontal: 2,
+    marginBottom: 2, // espaço para nome
+  },
+  categoriaImg: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: 'cover',
   },
   categoriaText: {
     fontSize: 13,
