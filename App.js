@@ -21,7 +21,7 @@ const Tab = createBottomTabNavigator();
 
 function InicioTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Inicio" component={Inicio} />
       <Tab.Screen name="Perfil" component={Perfil} />
       <Tab.Screen name="Carrinho" component={Carrinho} />
